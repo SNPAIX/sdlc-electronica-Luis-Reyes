@@ -3,9 +3,15 @@ En este repositorio se estara adjuntando todas las actividades semanales del cur
 
 
 # Program: De Electrónica a Desarrollo de Software con IA
+
 **Estudiante:** Luis Khaled Reyes Casanova 
-**Matricula** S24013149
+
+**Matricula:** S24013149
+
 **Correo de Classroom:** freddybethoven@gmail.com 
-**Carrera** Ingeniería en Instrumentacion Electronica
-**Semestre** 5to semestre
+
+**Carrera:** Ingeniería en Instrumentacion Electronica
+
+**Semestre:** 5to semestre
+
 ---
