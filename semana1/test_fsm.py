@@ -1,4 +1,3 @@
-import pytest
 from .fsm_demo import TrafficLightFSM, State
 
 def test_fsm_initial_state():

@@ -1,5 +1,4 @@
 import abc
-from typing import List
 
 # ==============================================================================
 # 1. SINGLE RESPONSIBILITY PRINCIPLE (SRP)

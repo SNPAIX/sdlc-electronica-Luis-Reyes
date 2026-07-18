@@ -1,4 +1,3 @@
-import pytest
 from .solid_isp_dip import BasicSensorISP, GoodDataProcessor
 
 # TESTS ISP

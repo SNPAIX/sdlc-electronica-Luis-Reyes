@@ -1,4 +1,3 @@
-import pytest
 from .solid_srp_ocp_lsp import (
     GoodSensorSRP, TelemetryFormatter,
     ADCProcessor, I2CProcessor,
