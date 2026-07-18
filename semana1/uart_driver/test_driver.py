@@ -1,7 +1,11 @@
 import pytest
+import os
+import json
+
 from .config import UartConfig
 from .parsers import ModbusParser, NMEAParser
 from .device import UartDevice
+from .recorder import UartDataRecorder
 
 def test_uart_config_invalid_baudrate():
     with pytest.raises(ValueError, match="Baudrate no soportado"):
@@ -28,3 +32,19 @@ def test_device_closed_raises_error():
     device = UartDevice(config, parser)
     with pytest.raises(RuntimeError, match="UART está cerrado"):
         device.receive_and_process(bytes([1, 3, 0, 100]))
+
+def test_recorder_saves_json_lines(tmp_path):
+    # tmp_path es un fixture de pytest que crea un directorio temporal limpio
+    test_file = tmp_path / "telemetry.jsonl"
+    recorder = UartDataRecorder(str(test_file))
+    
+    sample_data = {"protocol": "Modbus", "device_id": 1, "value": 23.5}
+    recorder.record(sample_data)
+    
+    # Verificar que el archivo existe y contiene la estructura correcta
+    assert test_file.exists()
+    with open(test_file, "r", encoding="utf-8") as f:
+        line = f.readline()
+        saved_dict = json.loads(line)
+        assert saved_dict["protocol"] == "Modbus"
+        assert saved_dict["value"] == 23.5
