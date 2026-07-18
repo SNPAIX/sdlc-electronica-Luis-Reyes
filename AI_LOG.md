@@ -1,5 +1,5 @@
 # AI Log - Semana 1
-**Estudiante:** Luis Reyes
+**Estudiante:** Luis Khaled Reyes Casanova
 
 ## Entrada 1: Abstracción de Configuración UART
 - **Prompt usado:** "Crea una configuración para un driver UART en Python que reemplace los structs típicos de C, usando buenas prácticas de tipado estricto."
