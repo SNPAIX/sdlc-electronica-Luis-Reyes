@@ -35,3 +35,14 @@
 * **Contexto:** Se requería simular el comportamiento estocástico de 10 sensores de bodega durante 60 ciclos continuos para validar la estabilidad del detector de anomalías frente a volúmenes masivos de datos.
 * **Propuesta de IA:** Usar `random.randint` para generar valores puramente aleatorios.
 * **Decisión Técnica e Ingeneril:** Se optó por `random.gauss()` con media en 25 °C y desviación estándar de 4 °C para modelar el comportamiento térmico real de una bodega industrial, agregando truncamiento explícito para evitar lecturas físicamente imposibles.
+
+=======
+
+
+## Semana 3: De un script a un servicio API REST
+
+### Entrada 1: Transición a Arquitectura en Capas y SQLAlchemy 2.0
+* **Contexto:** Se requería evolucionar el script monolítico de la Semana 2 hacia un servicio web en capas (Routers -> Services -> Repositories -> Models/Schemas) persistiendo datos mediante SQLAlchemy 2.0.
+* **Propuesta de IA:** Utilizar la sintaxis legacy `db.query(Model)` de SQLAlchemy 1.x e implementar la lógica de persistencia directamente en los endpoints del Router.
+* **Decisión Técnica e Ingeneril:** Se rechazó el acoplamiento en los routers y el uso de la API obsoleta 1.x. Se implementó el patrón Repositorio tipado utilizando sentencias explícitas `select(Model)` y la asignación mediante `Mapped[...]` para cumplir con las mejores prácticas modernas de SQLAlchemy 2.x y mantener el desacoplamiento de capas
+>>>>>>> 989823c (docs: reforzar justificacion de principios SOLID en README y agregar entradas semana 3 a AI_LOG)
