@@ -1,4 +1,5 @@
-from typing import Sequence
+from datetime import datetime
+from typing import Optional, Sequence
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from app.models.sensor_model import SensorReadingModel
@@ -19,6 +20,19 @@ class SensorRepository:
         self.db.refresh(db_reading)
         return db_reading
 
-    def get_all(self, skip: int = 0, limit: int = 100) -> Sequence[SensorReadingModel]:
-        stmt = select(SensorReadingModel).offset(skip).limit(limit)
+    def get_all(
+        self, 
+        skip: int = 0, 
+        limit: int = 100, 
+        start_date: Optional[datetime] = None, 
+        end_date: Optional[datetime] = None
+    ) -> Sequence[SensorReadingModel]:
+        stmt = select(SensorReadingModel)
+        
+        if start_date:
+            stmt = stmt.where(SensorReadingModel.timestamp >= start_date)
+        if end_date:
+            stmt = stmt.where(SensorReadingModel.timestamp <= end_date)
+            
+        stmt = stmt.offset(skip).limit(limit)
         return self.db.scalars(stmt).all()
