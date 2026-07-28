@@ -45,4 +45,13 @@
 * **Contexto:** Se requería evolucionar el script monolítico de la Semana 2 hacia un servicio web en capas (Routers -> Services -> Repositories -> Models/Schemas) persistiendo datos mediante SQLAlchemy 2.0.
 * **Propuesta de IA:** Utilizar la sintaxis legacy `db.query(Model)` de SQLAlchemy 1.x e implementar la lógica de persistencia directamente en los endpoints del Router.
 * **Decisión Técnica e Ingeneril:** Se rechazó el acoplamiento en los routers y el uso de la API obsoleta 1.x. Se implementó el patrón Repositorio tipado utilizando sentencias explícitas `select(Model)` y la asignación mediante `Mapped[...]` para cumplir con las mejores prácticas modernas de SQLAlchemy 2.x y mantener el desacoplamiento de capas
->>>>>>> 989823c (docs: reforzar justificacion de principios SOLID en README y agregar entradas semana 3 a AI_LOG)
+
+### Entrada 2: Validación Física de Telemetría y Contratos Pydantic V2
+* **Contexto:** Se debía garantizar la integridad de los datos de entrada para sensores de temperatura y humedad, evitando lecturas fuera de rangos físicos reales y manteniendo compatibilidad total con mypy
+* **Propuesta de IA:** Utilizar argumentos example= directamente en las llamadas a Field(...) dentro de los esquemas de Pydantic
+* **Decisión Técnica e Ingeneril:** Se descartó el uso de example= debido a su deprecación en Pydantic V2 y las advertencias de sobrecarga producidas en mypy. Se definieron clasificadores @field_validator de tipo @classmethod para validar la ventana física real (-50 °C a 80 °C en temperatura, 0% a 100% en humedad) retornando errores HTTP 422 descriptivos ante datos corruptos.
+
+### Entrada 3: Pruebas de Integración con SQLite en Memoria y Cobertura
+* **Contexto:** Se requería validar de forma automatizada los endpoints /readings (POST y GET con filtros de paginación/fechas) asegurando una cobertura de código  ≥80%.
+* **Propuesta de IA:** Ejecutar las pruebas unitarias directamente contra la base de datos de desarrollo sensor_hub.db.
+* **Decisión Técnica e Ingeneril:** Se rechazó la dependencia de la base de datos local para mantener la independencia y repetibilidad de los tests. Se implementaron fixtures con pytest para instanciar un motor SQLite en memoria (sqlite:///:memory:) y un TestClient de FastAPI, permitiendo aislar la base de datos en cada ejecución y alcanzando el 100% de éxito en los tests de integración con alta cobertura.
