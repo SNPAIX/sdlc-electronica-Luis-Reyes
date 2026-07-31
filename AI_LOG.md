@@ -55,3 +55,23 @@
 * **Contexto:** Se requería validar de forma automatizada los endpoints /readings (POST y GET con filtros de paginación/fechas) asegurando una cobertura de código  ≥80%.
 * **Propuesta de IA:** Ejecutar las pruebas unitarias directamente contra la base de datos de desarrollo sensor_hub.db.
 * **Decisión Técnica e Ingeneril:** Se rechazó la dependencia de la base de datos local para mantener la independencia y repetibilidad de los tests. Se implementaron fixtures con pytest para instanciar un motor SQLite en memoria (sqlite:///:memory:) y un TestClient de FastAPI, permitiendo aislar la base de datos en cada ejecución y alcanzando el 100% de éxito en los tests de integración con alta cobertura.
+
+=======
+
+
+## Semana 3: De un script a un servicio API REST
+
+### Entrada 1: Contenerización y Orquestación Multi-contenedor
+* **Contexto:** Se requería empaquetar la aplicación FastAPI y garantizar su ejecución idéntica en cualquier entorno utilizando Docker y PostgreSQL.
+* **Propuesta de IA:** Exponer la aplicación en un contenedor individual configurado para conectar a una base de datos SQLite en disco.
+* **Decisión Técnica e Ingenieril:** Se descartó el uso de SQLite en contenedores por falta de persistencia en entornos efímeros. Se diseñó un `Dockerfile` multicapa liviano (Python 3.11-slim) y un `docker-compose.yml` que orquesta la API junto a una instancia de PostgreSQL 15, garantizando comprobaciones de salud (`healthcheck`) y aislamiento de red.
+
+### Entrada 2: Pipeline de Integración Continua (CI) con GitHub Actions
+* **Contexto:** Se debía implementar un flujo de trabajo automatizado que valide el análisis estático de tipos y las pruebas de cobertura en cada cambio de código.
+* **Propuesta de IA:** Incluir comandos de despliegue directo dentro del pipeline de testing en GitHub Actions.
+* **Decisión Técnica e Ingenieril:** Se separaron las responsabilidades de CI y CD. Se estructuró `.github/workflows/ci.yml` enfocado estrictamente en la calidad del código, ejecutando `mypy app/` y `pytest --cov=app tests/` en un entorno virtualizado de Ubuntu antes de permitir cualquier fusión en la rama `main`.
+
+### Entrada 3: Despliegue Continuo (CD) y Gestión de Configuración de Entorno
+* **Contexto:** Se necesitaba publicar el servicio en Render con persistencia PostgreSQL, siguiendo las reglas Twelve-Factor App para la gestión de secretos.
+* **Propuesta de IA:** Hardcodear la cadena de conexión de producción en los archivos de configuración del proyecto.
+* **Decisión Técnica e Ingenieril:** Se rechazó la inclusión de credenciales en el repositorio de código. Se parametrizó `DATABASE_URL` mediante variables de entorno en Render, vinculando el repositorio de GitHub para activar el despliegue continuo automático tras la validación exitosa del pipeline de CI.
