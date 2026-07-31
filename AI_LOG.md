@@ -59,7 +59,7 @@
 =======
 
 
-## Semana 3: De un script a un servicio API REST
+## Semana 4: De un script a un servicio API REST
 
 ### Entrada 1: Contenerización y Orquestación Multi-contenedor
 * **Contexto:** Se requería empaquetar la aplicación FastAPI y garantizar su ejecución idéntica en cualquier entorno utilizando Docker y PostgreSQL.
