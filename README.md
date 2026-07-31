@@ -26,8 +26,9 @@ docker compose up --build -d
 # Program: De Electrónica a Desarrollo de Software con IA
 
 **Estudiante:** Luis Khaled Reyes Casanova 
-![Descripcion grafica de mi presencia](assets/uma-pyo.gif)**Matricula:** S24013149
-
+<div align="center">
+  <img width="190" height="284" alt="uma pyo" src="https://github.com/user-attachments/assets/33d3bf1a-1f08-48c4-a957-27824c43114b">
+</div>
 
 **Correo de Classroom:** freddybethoven@gmail.com 
 
