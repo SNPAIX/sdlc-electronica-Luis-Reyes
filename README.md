@@ -1,11 +1,31 @@
 # sdlc-electronica-Luis-Reyes
 En este repositorio se estara adjuntando todas las actividades semanales del curso "De electrónica a desarrollo de software con IA"
 
+# SensorHub IoT API
+
+[![Continuous Integration](https://github.com/SNPAIX/sdlc-electronica-Luis-Reyes/actions/workflows/ci.yml/badge.svg)](https://github.com/SNPAIX/sdlc-electronica-Luis-Reyes/actions/workflows/ci.yml)
+
+API RESTful para la recolección, filtrado y monitoreo de telemetría de sensores IoT.
+
+## 🚀 Despliegue en Producción
+
+La aplicación se encuentra desplegada y viva en Render:
+
+* **URL Pública:** https://sensorhub-api-luis.onrender.com
+* **Health Check:** [https://sensorhub-api-luis.onrender.com/health](https://sensorhub-api-luis.onrender.com/health)
+* **Documentación Interactiva (Swagger):** [https://sensorhub-api-luis.onrender.com/docs](https://sensorhub-api-luis.onrender.com/docs)
+
+## 🐳 Ejecución Local con Docker Compose
+
+Para levantar todo el entorno de desarrollo (API + PostgreSQL):
+
+```bash
+docker compose up --build -d
 
 # Program: De Electrónica a Desarrollo de Software con IA
 
 **Estudiante:** Luis Khaled Reyes Casanova 
-
+![Descripcion grafica de mi presencia](assets/uma pyo.gif)
 **Matricula:** S24013149
 
 **Correo de Classroom:** freddybethoven@gmail.com 
@@ -35,3 +55,4 @@ El sistema está **abierto a la extensión pero cerrado a la modificación**:
 ### 3. Dependency Inversion Principle (DIP)
 * `AnomalyDetector` y `AlertManager` no dependen de implementaciones concretas ni de valores *hardcodeados*. Los umbrales de temperatura/humedad y las estrategias de notificación son inyectados como dependencias en sus constructores.
 * En la capa web de FastAPI, el patrón de **Inyección de Dependencias** (`Depends`) desacopla el `SensorRouter` de la instancia específica de la sesión de base de datos y de la capa de servicios.
+
