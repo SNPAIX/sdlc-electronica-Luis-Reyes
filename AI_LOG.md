@@ -75,3 +75,17 @@
 * **Contexto:** Se necesitaba publicar el servicio en Render con persistencia PostgreSQL, siguiendo las reglas Twelve-Factor App para la gestión de secretos.
 * **Propuesta de IA:** Hardcodear la cadena de conexión de producción en los archivos de configuración del proyecto.
 * **Decisión Técnica e Ingenieril:** Se rechazó la inclusión de credenciales en el repositorio de código. Se parametrizó `DATABASE_URL` mediante variables de entorno en Render, vinculando el repositorio de GitHub para activar el despliegue continuo automático tras la validación exitosa del pipeline de CI.
+
+
+=======
+
+
+## Semana 5: La IA como un copiloto profesional
+
+## Intento de Instalación de Aider — Martes 11
+
+* **Objetivo:** Instalar `aider-chat` para refactorización asistida con trazabilidad en Git.
+* **Comando ejecutado:** `pip install aider-chat`
+* **Resultado:** Fallo al compilar dependencia `numpy`.
+* **Error:** `AttributeError: module 'pkgutil' has no attribute 'ImpImporter'` debido a incompatibilidad entre la versión de Python del entorno virtual y las herramientas de compilación de `setuptools` para NumPy en Windows.
+* **Estrategia de mitigación:** Se adopta la alternativa indicada en el plan de estudios: utilizar **GitHub Copilot Chat** (o asistente integrado de VS Code) para la generación/refactorización de código con commits manuales explicativos.
