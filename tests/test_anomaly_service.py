@@ -1,4 +1,3 @@
-import pytest
 from app.services.anomaly_service import detect_temperature_anomalies
 
 
