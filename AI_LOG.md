@@ -89,3 +89,9 @@
 * **Resultado:** Fallo al compilar dependencia `numpy`.
 * **Error:** `AttributeError: module 'pkgutil' has no attribute 'ImpImporter'` debido a incompatibilidad entre la versión de Python del entorno virtual y las herramientas de compilación de `setuptools` para NumPy en Windows.
 * **Estrategia de mitigación:** Se adopta la alternativa indicada en el plan de estudios: utilizar **GitHub Copilot Chat** (o asistente integrado de VS Code) para la generación/refactorización de código con commits manuales explicativos.
+
+## Ciclo TDD — Detección de Anomalías (Semana 5)
+
+* **Fase Roja 🔴:** Se redactaron 5 pruebas unitarias en `tests/test_anomaly_service.py` cubriendo casos borde (listas vacías, varianza cero, outliers de $>\!2.5\sigma$). Las pruebas fallaron por la ausencia del módulo.
+* **Fase Verde 🟢:** Se creó `app/services/anomaly_service.py` con la función `detect_temperature_anomalies`. Las 5 pruebas pasaron exitosamente.
+* **Fase Refactor / Calidad 🔵:** Se verificó el cumplimiento de estándares con `ruff` y `mypy`.
