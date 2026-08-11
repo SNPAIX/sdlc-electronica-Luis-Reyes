@@ -39,19 +39,19 @@
 =======
 
 
-## Semana 3: De un script a un servicio API REST
+# Semana 3: De un script a un servicio API REST
 
-### Entrada 1: Transición a Arquitectura en Capas y SQLAlchemy 2.0
+## Entrada 1: Transición a Arquitectura en Capas y SQLAlchemy 2.0
 * **Contexto:** Se requería evolucionar el script monolítico de la Semana 2 hacia un servicio web en capas (Routers -> Services -> Repositories -> Models/Schemas) persistiendo datos mediante SQLAlchemy 2.0.
 * **Propuesta de IA:** Utilizar la sintaxis legacy `db.query(Model)` de SQLAlchemy 1.x e implementar la lógica de persistencia directamente en los endpoints del Router.
 * **Decisión Técnica e Ingeneril:** Se rechazó el acoplamiento en los routers y el uso de la API obsoleta 1.x. Se implementó el patrón Repositorio tipado utilizando sentencias explícitas `select(Model)` y la asignación mediante `Mapped[...]` para cumplir con las mejores prácticas modernas de SQLAlchemy 2.x y mantener el desacoplamiento de capas
 
-### Entrada 2: Validación Física de Telemetría y Contratos Pydantic V2
+## Entrada 2: Validación Física de Telemetría y Contratos Pydantic V2
 * **Contexto:** Se debía garantizar la integridad de los datos de entrada para sensores de temperatura y humedad, evitando lecturas fuera de rangos físicos reales y manteniendo compatibilidad total con mypy
 * **Propuesta de IA:** Utilizar argumentos example= directamente en las llamadas a Field(...) dentro de los esquemas de Pydantic
 * **Decisión Técnica e Ingeneril:** Se descartó el uso de example= debido a su deprecación en Pydantic V2 y las advertencias de sobrecarga producidas en mypy. Se definieron clasificadores @field_validator de tipo @classmethod para validar la ventana física real (-50 °C a 80 °C en temperatura, 0% a 100% en humedad) retornando errores HTTP 422 descriptivos ante datos corruptos.
 
-### Entrada 3: Pruebas de Integración con SQLite en Memoria y Cobertura
+## Entrada 3: Pruebas de Integración con SQLite en Memoria y Cobertura
 * **Contexto:** Se requería validar de forma automatizada los endpoints /readings (POST y GET con filtros de paginación/fechas) asegurando una cobertura de código  ≥80%.
 * **Propuesta de IA:** Ejecutar las pruebas unitarias directamente contra la base de datos de desarrollo sensor_hub.db.
 * **Decisión Técnica e Ingeneril:** Se rechazó la dependencia de la base de datos local para mantener la independencia y repetibilidad de los tests. Se implementaron fixtures con pytest para instanciar un motor SQLite en memoria (sqlite:///:memory:) y un TestClient de FastAPI, permitiendo aislar la base de datos en cada ejecución y alcanzando el 100% de éxito en los tests de integración con alta cobertura.
@@ -59,19 +59,19 @@
 =======
 
 
-## Semana 4: De un script a un servicio API REST
+# Semana 4: De un script a un servicio API REST
 
-### Entrada 1: Contenerización y Orquestación Multi-contenedor
+## Entrada 1: Contenerización y Orquestación Multi-contenedor
 * **Contexto:** Se requería empaquetar la aplicación FastAPI y garantizar su ejecución idéntica en cualquier entorno utilizando Docker y PostgreSQL.
 * **Propuesta de IA:** Exponer la aplicación en un contenedor individual configurado para conectar a una base de datos SQLite en disco.
 * **Decisión Técnica e Ingenieril:** Se descartó el uso de SQLite en contenedores por falta de persistencia en entornos efímeros. Se diseñó un `Dockerfile` multicapa liviano (Python 3.11-slim) y un `docker-compose.yml` que orquesta la API junto a una instancia de PostgreSQL 15, garantizando comprobaciones de salud (`healthcheck`) y aislamiento de red.
 
-### Entrada 2: Pipeline de Integración Continua (CI) con GitHub Actions
+## Entrada 2: Pipeline de Integración Continua (CI) con GitHub Actions
 * **Contexto:** Se debía implementar un flujo de trabajo automatizado que valide el análisis estático de tipos y las pruebas de cobertura en cada cambio de código.
 * **Propuesta de IA:** Incluir comandos de despliegue directo dentro del pipeline de testing en GitHub Actions.
 * **Decisión Técnica e Ingenieril:** Se separaron las responsabilidades de CI y CD. Se estructuró `.github/workflows/ci.yml` enfocado estrictamente en la calidad del código, ejecutando `mypy app/` y `pytest --cov=app tests/` en un entorno virtualizado de Ubuntu antes de permitir cualquier fusión en la rama `main`.
 
-### Entrada 3: Despliegue Continuo (CD) y Gestión de Configuración de Entorno
+## Entrada 3: Despliegue Continuo (CD) y Gestión de Configuración de Entorno
 * **Contexto:** Se necesitaba publicar el servicio en Render con persistencia PostgreSQL, siguiendo las reglas Twelve-Factor App para la gestión de secretos.
 * **Propuesta de IA:** Hardcodear la cadena de conexión de producción en los archivos de configuración del proyecto.
 * **Decisión Técnica e Ingenieril:** Se rechazó la inclusión de credenciales en el repositorio de código. Se parametrizó `DATABASE_URL` mediante variables de entorno en Render, vinculando el repositorio de GitHub para activar el despliegue continuo automático tras la validación exitosa del pipeline de CI.
@@ -80,27 +80,57 @@
 =======
 
 
-## Semana 5: La IA como un copiloto profesional
+# Semana 5: La IA como un copiloto profesional
 
-## Intento de Instalación de Aider — Martes 11
+## Entrada 1: Intento de Configuración de Aider (Martes 11 de Agosto)
+* **Contexto / Objetivo:** Intentar integrar la herramienta `aider-chat` en la terminal para refactorizaciones con trazabilidad en Git.
+* **Comando / Prompt ejecutado:** `pip install aider-chat`
+* **Resultado producido por el entorno:**
+  ```text
+  AttributeError: module 'pkgutil' has no attribute 'ImpImporter'
+  ERROR: Failed to build 'numpy' when getting requirements to build wheel
+  ```
+   **Decisión Técnica e Ingenieril:** Detener la instalación de Aider en el entorno Windows con Python 3.12 y pasar a la alternativa oficialmente aceptada en la guía. El error se debe a la eliminación de ImpImporter en Python 3.12 y conflictos de compilación de NumPy en Windows. Se adopta el uso de GitHub Copilot Chat en VS Code realizando los commits manuales en Git para garantizar trazabilidad sin bloquear el avance.
 
-* **Objetivo:** Instalar `aider-chat` para refactorización asistida con trazabilidad en Git.
-* **Comando ejecutado:** `pip install aider-chat`
-* **Resultado:** Fallo al compilar dependencia `numpy`.
-* **Error:** `AttributeError: module 'pkgutil' has no attribute 'ImpImporter'` debido a incompatibilidad entre la versión de Python del entorno virtual y las herramientas de compilación de `setuptools` para NumPy en Windows.
-* **Estrategia de mitigación:** Se adopta la alternativa indicada en el plan de estudios: utilizar **GitHub Copilot Chat** (o asistente integrado de VS Code) para la generación/refactorización de código con commits manuales explicativos.
+## Entrada 2: Implementación del Detector de Anomalías y Notificador OCP (Miércoles 12 de Agosto)
+* **Contexto / Objetivo:** Generar la función pura para detectar anomalías de temperatura y la estrategia de notificación usando el principio Open/Closed (OCP).
+**Prompt Utilizado (CTRF)**
+Contexto: API FastAPI en Python 3.11+ con arquitectura en capas.
+Tarea: Generar la función detect_and_notify_anomalies y una interfaz NotificationStrategy con una implementación MockNotificationStrategy.
+Restricciones: Cero dependencias externas (usar math y abc), tipado estricto para mypy, y manejo explícito de varianza cero para evitar ZeroDivisionError.
+Formato: Código Python con docstrings formato Google.
+**Resultado Producido por la IA**
+```import Python
+import math
+from abc import ABC, abstractmethod
 
-## Ciclo TDD — Detección de Anomalías (Semana 5)
+class NotificationStrategy(ABC):
+    @abstractmethod
+    def notify(self, anomalies: list) -> bool: pass
 
-* **Fase Roja 🔴:** Se redactaron 5 pruebas unitarias en `tests/test_anomaly_service.py` cubriendo casos borde (listas vacías, varianza cero, outliers de $>\!2.5\sigma$). Las pruebas fallaron por la ausencia del módulo.
-* **Fase Verde 🟢:** Se creó `app/services/anomaly_service.py` con la función `detect_temperature_anomalies`. Las 5 pruebas pasaron exitosamente.
-* **Fase Refactor / Calidad 🔵:** Se verificó el cumplimiento de estándares con `ruff` y `mypy`.
+def detect_and_notify_anomalies(readings: list[float], notifier=None):
+    mean = sum(readings) / len(readings)
+    std_dev = math.sqrt(sum((x - mean) ** 2 for x in readings) / len(readings))
+    ...
+```
+**Decisión Técnica e Ingenieril:** Se aceptó la estructura del patrón Strategy y el cálculo estadístico, pero se refactorizó manualmente el tipado. La IA omitió las anotaciones de tipos detalladas en los argumentos (notifier: NotificationStrategy | None = None) y en los retornos (list[dict[str, Any]]). Se corrigieron para asegurar 0 hallazgos en mypy.
 
-## Cierre de Semana 5: Peer Review Ronda 2 (Humano vs. IA) — Sábado 15
+## Entrada 3: Code Review Asistido y Peer Review Ronda 2 (Sábado 15 de Agosto)
 
-### Comparativa de Revisión: Humano vs. LLM en Pull Request
-* **Hallazgos del LLM:** Detecta errores de sintaxis, falta de type hints, posibles excepciones sin capturar y casos de borde matemáticos (ej. varianza cero).
-* **Hallazgos del Revisor Humano:** Valida la coherencia de negocio, si los umbrales de detección de anomalías tienen sentido técnico para el hardware de sensores y si la estructura cumple con la rúbrica del curso.
+* **Contexto / Objetivo:** Revisar la suite de pruebas y el endpoint /anomalies/check antes del cierre de la semana.
 
-### Veredicto del Criterio Propio
-Se confirma el principio de la semana: *El LLM optimiza plausibilidad, no corrección.* La asistencia de IA aceleró la generación de casos de prueba y el borrador de rutas, pero la validación final del tipado estricto (`mypy`), linters (`ruff`) y la arquitectura correspondió al ingeniero a cargo.
+**Prompt Utilizado (CTRF)**
+"Actúa como un revisor de código Senior en Python. Revisa la clase app/services/anomaly_service.py y detecta posibles fallos de seguridad, vulnerabilidades de rendimiento o casos borde no cubiertos."
+
+**Resultado Producido por la IA:**
+Sugirió validar que la lista de lecturas tenga al menos 3 elementos para que la desviación estándar sea estadísticamente significativa.
+Sugirió importar numpy para acelerar el cálculo estadístico.
+Detectó la falta de protección ante arreglos masivos (Riesgo DoS / OWASP API4).
+
+**Decisión Técnica e Ingenieril:** 
+Aceptado: Se agregó la condición if len(readings) < 3: return [] y la validación de tamaño en los esquemas Pydantic del router.
+Rechazado: Se rechazó la importación de numpy. Se mantiene la librería estándar math para evitar dependencias innecesarias en el contenedor de producción.
+
+**Cierre y Conclusiones de la Semana**
+Plausibilidad vs. Corrección: El LLM genera soluciones estructuralmente convincentes muy rápido, pero suele omitir tipado estricto (mypy) y casos de borde estadísticos.
+Complementariedad Humano + IA: La IA es excelente detectando detalles sintácticos y sugiriendo pruebas; el criterio humano determina la arquitectura, los límites de dominio y la seguridad del sistema.
