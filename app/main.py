@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.db import Base, engine
 from app.routers.sensor_router import router as sensor_router
+from app.routers import anomalies  # o la ruta correspondiente
 
 # Crear las tablas en la base de datos
 Base.metadata.create_all(bind=engine)
@@ -12,6 +13,7 @@ app = FastAPI(
 )
 
 app.include_router(sensor_router)
+app.include_router(anomalies.router)
 
 @app.get("/health", tags=["Health"])
 def health_check() -> dict[str, str]:
