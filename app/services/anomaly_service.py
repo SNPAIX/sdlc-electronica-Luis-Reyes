@@ -1,19 +1,46 @@
 import math
+from abc import ABC, abstractmethod
 from typing import Any
 
 
+# --- Interfaz de Notificación (Estrategia Intercambiable - OCP) ---
+class NotificationStrategy(ABC):
+    @abstractmethod
+    def notify(self, anomalies: list[dict[str, Any]]) -> bool:
+        """Envía una alerta cuando se detectan anomalías."""
+        pass
+
+
+class LogNotificationStrategy(NotificationStrategy):
+    """Estrategia concreta 1: Notificación vía Logs."""
+
+    def notify(self, anomalies: list[dict[str, Any]]) -> bool:
+        if not anomalies:
+            return False
+        print(f"[ALERT LOG] Se detectaron {len(anomalies)} anomalías de temperatura.")
+        return True
+
+
+class MockNotificationStrategy(NotificationStrategy):
+    """Estrategia concreta 2: Notificación Mock para Pruebas Unitarias."""
+
+    def __init__(self) -> None:
+        self.sent_notifications: list[list[dict[str, Any]]] = []
+
+    def notify(self, anomalies: list[dict[str, Any]]) -> bool:
+        if anomalies:
+            self.sent_notifications.append(anomalies)
+            return True
+        return False
+
+
+# --- Servicio Principal de Detección ---
 def detect_temperature_anomalies(
-    readings: list[float], threshold_std: float = 3.0
+    readings: list[float],
+    threshold_std: float = 3.0,
+    notifier: NotificationStrategy | None = None,
 ) -> list[dict[str, Any]]:
-    """Analiza una lista de lecturas de temperatura y detecta valores atípicos.
-
-    Args:
-        readings: Lista de valores numéricos de temperatura.
-        threshold_std: Umbral de desviaciones estándar para considerar anomalía.
-
-    Returns:
-        Lista de diccionarios con la información de los valores anómalos detectados.
-    """
+    """Calcula anomalías y opcionalmente las notifica usando una estrategia (OCP)."""
     if len(readings) < 3:
         return []
 
@@ -37,4 +64,11 @@ def detect_temperature_anomalies(
                 }
             )
 
+    if anomalies and notifier:
+        notifier.notify(anomalies)
+
     return anomalies
+
+
+# Alias para mantener retrocompatibilidad si es necesario
+detect_and_notify_anomalies = detect_temperature_anomalies
