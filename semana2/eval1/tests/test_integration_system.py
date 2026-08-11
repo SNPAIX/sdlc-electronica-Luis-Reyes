@@ -1,5 +1,4 @@
 import os
-import pytest
 from semana2.eval1.iot_monitoring.sensor_simulator import SensorSimulator
 from semana2.eval1.iot_monitoring.anomaly_detector import AnomalyDetector
 from semana2.eval1.iot_monitoring.alert_manager import AlertManager, FileNotificationStrategy

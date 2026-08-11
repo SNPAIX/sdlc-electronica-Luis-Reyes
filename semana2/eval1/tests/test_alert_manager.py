@@ -1,9 +1,7 @@
-import pytest
 from semana2.eval1.iot_monitoring.anomaly_detector import Anomaly, AnomalyType
 from semana2.eval1.iot_monitoring.alert_manager import (
     AlertManager,
     NotificationStrategy,
-    ConsoleNotificationStrategy,
 )
 
 class MockNotificationStrategy(NotificationStrategy):

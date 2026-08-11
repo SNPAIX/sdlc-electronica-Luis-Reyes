@@ -1,4 +1,3 @@
-import pytest
 from semana2.eval1.iot_monitoring.sensor_reading import SensorReading
 from semana2.eval1.iot_monitoring.anomaly_detector import AnomalyDetector, AnomalyType
 
