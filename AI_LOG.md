@@ -95,3 +95,12 @@
 * **Fase Roja 🔴:** Se redactaron 5 pruebas unitarias en `tests/test_anomaly_service.py` cubriendo casos borde (listas vacías, varianza cero, outliers de $>\!2.5\sigma$). Las pruebas fallaron por la ausencia del módulo.
 * **Fase Verde 🟢:** Se creó `app/services/anomaly_service.py` con la función `detect_temperature_anomalies`. Las 5 pruebas pasaron exitosamente.
 * **Fase Refactor / Calidad 🔵:** Se verificó el cumplimiento de estándares con `ruff` y `mypy`.
+
+## Cierre de Semana 5: Peer Review Ronda 2 (Humano vs. IA) — Sábado 15
+
+### Comparativa de Revisión: Humano vs. LLM en Pull Request
+* **Hallazgos del LLM:** Detecta errores de sintaxis, falta de type hints, posibles excepciones sin capturar y casos de borde matemáticos (ej. varianza cero).
+* **Hallazgos del Revisor Humano:** Valida la coherencia de negocio, si los umbrales de detección de anomalías tienen sentido técnico para el hardware de sensores y si la estructura cumple con la rúbrica del curso.
+
+### Veredicto del Criterio Propio
+Se confirma el principio de la semana: *El LLM optimiza plausibilidad, no corrección.* La asistencia de IA aceleró la generación de casos de prueba y el borrador de rutas, pero la validación final del tipado estricto (`mypy`), linters (`ruff`) y la arquitectura correspondió al ingeniero a cargo.
