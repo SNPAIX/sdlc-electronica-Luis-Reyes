@@ -1,3 +1,4 @@
+```mermaid
 graph TD
     Client[Cliente HTTP / Dashboard] -->|Petición REST| Router[FastAPI Routers]
     Router -->|DTOs Pydantic| Service[Capa de Servicios / Dominio]
@@ -9,7 +10,7 @@ graph TD
         Router -->|Logs JSON| Logger[Structured Logger]
         Router -->|Métricas & Healthcheck| Health["/health & /metrics"]
     end
-
+```
 # sdlc-electronica-Luis-Reyes
 En este repositorio se estara adjuntando todas las actividades semanales del curso "De electrónica a desarrollo de software con IA"
 
