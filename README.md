@@ -1,16 +1,20 @@
+#  SensorHub API — Monitoreo IoT y Detección de Alertas
+API REST de alto rendimiento para ingestión de lecturas de sensores, evaluación de umbrales operacionales y detección de anomalías con observabilidad en tiempo real.
+
 ```mermaid
 graph TD
-    Client[Cliente HTTP / Dashboard] -->|Petición REST| Router[FastAPI Routers]
+    Client[Cliente HTTP / Invoke-RestMethod] -->|Petición REST| Router[FastAPI Routers]
     Router -->|DTOs Pydantic| Service[Capa de Servicios / Dominio]
-    Service -->|Evaluación de Umbrales| AlertEngine[Motor de Alertas WARNING / CRITICAL]
+    Service -->|Evaluación de Umbrales| AlertEngine[Motor de Alertas OK / WARNING / CRITICAL]
     Service -->|Abstracción Repositorio| Repo[SQLAlchemy Repositories]
-    Repo -->|SQLAlchemy 2.x ORM| DB[(Base de Datos PostgreSQL)]
-
+    Repo -->|SQLAlchemy 2.x ORM| DB[(Base de Datos SQLite / PostgreSQL)]
+    
     subgraph Observabilidad
-        Router -->|Logs JSON| Logger[Structured Logger]
-        Router -->|Métricas & Healthcheck| Health["/health & /metrics"]
+        Router -->|Logs JSON| Logger[Structured JSON Logger]
+        Router -->|Diagnóstico| Health[/health]
     end
 ```
+
 # sdlc-electronica-Luis-Reyes
 En este repositorio se estara adjuntando todas las actividades semanales del curso "De electrónica a desarrollo de software con IA"
 
@@ -70,4 +74,9 @@ El sistema está **abierto a la extensión pero cerrado a la modificación**:
 ### 3. Dependency Inversion Principle (DIP)
 * `AnomalyDetector` y `AlertManager` no dependen de implementaciones concretas ni de valores *hardcodeados*. Los umbrales de temperatura/humedad y las estrategias de notificación son inyectados como dependencias en sus constructores.
 * En la capa web de FastAPI, el patrón de **Inyección de Dependencias** (`Depends`) desacopla el `SensorRouter` de la instancia específica de la sesión de base de datos y de la capa de servicios.
+
+# SensorHub API — Monitoreo IoT y Detección de Alertas
+
+API REST de alto rendimiento para ingestión de lecturas de sensores, evaluación de umbrales operacionales y detección de anomalías con observabilidad en tiempo real.
+
 
