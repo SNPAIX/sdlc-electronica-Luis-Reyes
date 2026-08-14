@@ -3,18 +3,17 @@ API REST de alto rendimiento para ingestión de lecturas de sensores, evaluació
 
 ```mermaid
 graph TD
-    Client[Cliente HTTP / Invoke-RestMethod] -->|Petición REST| Router[FastAPI Routers]
-    Router -->|DTOs Pydantic| Service[Capa de Servicios / Dominio]
-    Service -->|Evaluación de Umbrales| AlertEngine[Motor de Alertas OK / WARNING / CRITICAL]
+    Client["Cliente HTTP / Invoke-RestMethod"] -->|Petición REST| Router[FastAPI Routers]
+    Router -->|DTOs Pydantic| Service["Capa de Servicios / Dominio"]
+    Service -->|Evaluación de Umbrales| AlertEngine["Motor de Alertas OK / WARNING / CRITICAL"]
     Service -->|Abstracción Repositorio| Repo[SQLAlchemy Repositories]
     Repo -->|SQLAlchemy 2.x ORM| DB[(Base de Datos SQLite / PostgreSQL)]
     
     subgraph Observabilidad
         Router -->|Logs JSON| Logger[Structured JSON Logger]
-        Router -->|Diagnóstico| Health[/health]
+        Router -->|Diagnóstico| Health["/health"]
     end
 ```
-
 # sdlc-electronica-Luis-Reyes
 En este repositorio se estara adjuntando todas las actividades semanales del curso "De electrónica a desarrollo de software con IA"
 
