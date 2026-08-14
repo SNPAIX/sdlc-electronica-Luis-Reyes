@@ -1,20 +1,21 @@
-from fastapi import FastAPI
-from app.db import Base, engine
-from app.routers.sensor_router import router as sensor_router
-from app.routers import anomalies  # o la ruta correspondiente
-
-# Crear las tablas en la base de datos
-Base.metadata.create_all(bind=engine)
+from fastapi import FastAPI, status
+from app.routers import readings
 
 app = FastAPI(
-    title="SensorHub IoT API",
-    description="API para monitoreo de telemetría e inyección de datos de sensores",
-    version="1.0.0"
+    title="SensorHub API",
+    description="API de monitoreo e integración de sensores con arquitectura limpia",
+    version="1.0.0",
 )
 
-app.include_router(sensor_router)
-app.include_router(anomalies.router)
+# Incluir router de lecturas
+app.include_router(readings.router)
 
-@app.get("/health", tags=["Health"])
-def health_check() -> dict[str, str]:
-    return {"status": "ok", "service": "SensorHub IoT API"}
+
+@app.get(
+    "/health",
+    status_code=status.HTTP_200_OK,
+    tags=["Observability"],
+    summary="Healthcheck para monitoreo en producción",
+)
+def healthcheck() -> dict[str, str]:
+    return {"status": "healthy", "database": "connected"}

@@ -94,12 +94,12 @@
 
 ## Entrada 2: Implementación del Detector de Anomalías y Notificador OCP (Miércoles 12 de Agosto)
 * **Contexto / Objetivo:** Generar la función pura para detectar anomalías de temperatura y la estrategia de notificación usando el principio Open/Closed (OCP).
-**Prompt Utilizado (CTRF)**
+* **Prompt Utilizado (CTRF)**
 Contexto: API FastAPI en Python 3.11+ con arquitectura en capas.
 Tarea: Generar la función detect_and_notify_anomalies y una interfaz NotificationStrategy con una implementación MockNotificationStrategy.
 Restricciones: Cero dependencias externas (usar math y abc), tipado estricto para mypy, y manejo explícito de varianza cero para evitar ZeroDivisionError.
 Formato: Código Python con docstrings formato Google.
-**Resultado Producido por la IA**
+* **Resultado Producido por la IA**
 ```import Python
 import math
 from abc import ABC, abstractmethod
@@ -113,24 +113,44 @@ def detect_and_notify_anomalies(readings: list[float], notifier=None):
     std_dev = math.sqrt(sum((x - mean) ** 2 for x in readings) / len(readings))
     ...
 ```
-**Decisión Técnica e Ingenieril:** Se aceptó la estructura del patrón Strategy y el cálculo estadístico, pero se refactorizó manualmente el tipado. La IA omitió las anotaciones de tipos detalladas en los argumentos (notifier: NotificationStrategy | None = None) y en los retornos (list[dict[str, Any]]). Se corrigieron para asegurar 0 hallazgos en mypy.
+* **Decisión Técnica e Ingenieril:** Se aceptó la estructura del patrón Strategy y el cálculo estadístico, pero se refactorizó manualmente el tipado. La IA omitió las anotaciones de tipos detalladas en los argumentos (notifier: NotificationStrategy | None = None) y en los retornos (list[dict[str, Any]]). Se corrigieron para asegurar 0 hallazgos en mypy.
 
 ## Entrada 3: Code Review Asistido y Peer Review Ronda 2 (Sábado 15 de Agosto)
 
 * **Contexto / Objetivo:** Revisar la suite de pruebas y el endpoint /anomalies/check antes del cierre de la semana.
 
-**Prompt Utilizado (CTRF)**
+* **Prompt Utilizado (CTRF)**
 "Actúa como un revisor de código Senior en Python. Revisa la clase app/services/anomaly_service.py y detecta posibles fallos de seguridad, vulnerabilidades de rendimiento o casos borde no cubiertos."
 
-**Resultado Producido por la IA:**
+* **Resultado Producido por la IA:**
 Sugirió validar que la lista de lecturas tenga al menos 3 elementos para que la desviación estándar sea estadísticamente significativa.
 Sugirió importar numpy para acelerar el cálculo estadístico.
 Detectó la falta de protección ante arreglos masivos (Riesgo DoS / OWASP API4).
 
-**Decisión Técnica e Ingenieril:** 
+* **Decisión Técnica e Ingenieril:** 
 Aceptado: Se agregó la condición if len(readings) < 3: return [] y la validación de tamaño en los esquemas Pydantic del router.
 Rechazado: Se rechazó la importación de numpy. Se mantiene la librería estándar math para evitar dependencias innecesarias en el contenedor de producción.
 
-**Cierre y Conclusiones de la Semana**
+* **Cierre y Conclusiones de la Semana**
 Plausibilidad vs. Corrección: El LLM genera soluciones estructuralmente convincentes muy rápido, pero suele omitir tipado estricto (mypy) y casos de borde estadísticos.
 Complementariedad Humano + IA: La IA es excelente detectando detalles sintácticos y sugiriendo pruebas; el criterio humano determina la arquitectura, los límites de dominio y la seguridad del sistema.
+
+
+# Semana 5: La IA como un copiloto profesional
+
+## Entrada 1: Integración de API y Validación de Endpoints (Miércoles 19)
+* **Contexto / Objetivo:** Verificar la comunicación HTTP entre FastAPI, el esquema Pydantic y el motor puro de dominio (`alert_service`).
+
+* **Prueba Ejecutada (Terminal PowerShell):**
+  ```powershell
+  Invoke-RestMethod -Uri "[http://127.0.0.1:8080/readings/evaluate](http://127.0.0.1:8080/readings/evaluate)" `
+    -Method Post `
+    -ContentType "application/json" `
+    -Body '{"sensor_id":"TEMP-01","value":42.0,"min_threshold":15.0,"max_threshold":30.0,"critical_threshold":40.0}'
+  ```
+  
+* **Resultado Producido por la API:**
+Status HTTP: 200 OK (y 200 OK en /health).
+Payload de Respuesta : {"sensor_id":"TEMP-01", "value":42.0, "alert_level":"CRITICAL", "message":"¡ALERTA CRÍTICO!..."}
+
+* **Decisión Técnica e Ingenieril:** Estatus: Integración validada correctamente desde terminal mediante cliente HTTP nativo. Siguiente paso: Proceder con la implementación de logs estructurados en JSON para observabilidad.

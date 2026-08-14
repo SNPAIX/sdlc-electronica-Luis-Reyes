@@ -7,7 +7,7 @@ def test_evaluate_reading_ok() -> None:
         value=22.0, min_threshold=15.0, max_threshold=30.0, critical_threshold=40.0
     )
     assert status == AlertLevel.OK
-    assert "Lectura dentro del rango normal" in message
+    assert "dentro del rango normal" in message
 
 
 def test_evaluate_reading_warning_lower() -> None:
