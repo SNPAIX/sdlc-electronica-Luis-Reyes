@@ -138,7 +138,7 @@ Complementariedad Humano + IA: La IA es excelente detectando detalles sintáctic
 
 # Semana 5: La IA como un copiloto profesional
 
-## Entrada 1: Integración de API y Validación de Endpoints (Miércoles 19)
+## Entrada 1: Integración de API y Validación de Endpoints (Miércoles 15)
 * **Contexto / Objetivo:** Verificar la comunicación HTTP entre FastAPI, el esquema Pydantic y el motor puro de dominio (`alert_service`).
 
 * **Prueba Ejecutada (Terminal PowerShell):**
