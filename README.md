@@ -1,16 +1,14 @@
-```mermaid
 graph TD
     Client[Cliente HTTP / Dashboard] -->|Petición REST| Router[FastAPI Routers]
     Router -->|DTOs Pydantic| Service[Capa de Servicios / Dominio]
     Service -->|Evaluación de Umbrales| AlertEngine[Motor de Alertas WARNING / CRITICAL]
     Service -->|Abstracción Repositorio| Repo[SQLAlchemy Repositories]
     Repo -->|SQLAlchemy 2.x ORM| DB[(Base de Datos PostgreSQL)]
-    
+
     subgraph Observabilidad
         Router -->|Logs JSON| Logger[Structured Logger]
-        Router -->|Métricas & Healthcheck| Health[/health & /metrics]
+        Router -->|Métricas & Healthcheck| Health["/health & /metrics"]
     end
-```
 
 # sdlc-electronica-Luis-Reyes
 En este repositorio se estara adjuntando todas las actividades semanales del curso "De electrónica a desarrollo de software con IA"
