@@ -14,6 +14,7 @@ graph TD
         Router -->|Diagnóstico| Health["/health"]
     end
 ```
+
 # sdlc-electronica-Luis-Reyes
 En este repositorio se estara adjuntando todas las actividades semanales del curso "De electrónica a desarrollo de software con IA"
 
@@ -79,3 +80,8 @@ El sistema está **abierto a la extensión pero cerrado a la modificación**:
 API REST de alto rendimiento para ingestión de lecturas de sensores, evaluación de umbrales operacionales y detección de anomalías con observabilidad en tiempo real.
 
 
+## 🎬 Demostración en Video
+
+[![Ver Demo SensorHub API](https://img.shields.io/badge/Video_Demo-Ver_en_Google_Drive-4285F4?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/file/d/1tSIzHB6AV30QiHNhb5XnUwKa9vsCXhv8/view?usp=sharing)
+
+* **Enlace directo al video:** [Ver demostración técnica de SensorHub API (3-5 min)](https://drive.google.com/file/d/1tSIzHB6AV30QiHNhb5XnUwKa9vsCXhv8/view?usp=sharing)
