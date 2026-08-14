@@ -166,4 +166,4 @@ Payload de Respuesta : {"sensor_id":"TEMP-01", "value":42.0, "alert_level":"CRIT
 * **Resultado Producido por la IA:** Generó el código base con el handler de FastAPI y la serialización `json.dumps()`.
 * **Decisión del Ingeniero y Justificación:**
   * **Aceptado:** Se utilizó la estructura del log JSON para el evento `SENSOR_ALERT_TRIGGERED`.
-  * **Ajustado:** Se refactorizó la firma del endpoint y los esquemas de Pydantic V2 utilizando `json_schema_extra` para evitar advertencias de deprecación en los reportes de prueba.
+  * **Ajustado:** Se refactorizó la firma del endpoint y los esquemas de Pydantic V2 utilizando `json_schema_extra` para evitar advertencias de deprecación en los reportes de prueba. 
